@@ -11,7 +11,7 @@ database [via the REST API](https://firebase.google.com/docs/database/rest/retri
 [rest-firebase](https://github.com/CodementorIO/rest-firebase) Ruby library by the [Codementor](https://www.codementor.io) folks.
 Each `firebase` output allows you to write your event data to whatever reference in your Firebase database.
 
-This output plugin supports all https://firebase.google.com/docs/database/rest/save-data#section-ways-to-save[REST operations] 
+This output plugin supports all [REST operations](https://firebase.google.com/docs/database/rest/save-data#section-ways-to-save) 
 provided by Firebase, namely:
  * `put`: to create new data or modify existing data under a specific database reference
  * `patch`: to update some of the keys under a specific database reference without replacing all of the data.
@@ -21,7 +21,9 @@ provided by Firebase, namely:
 The whole event data will be written to Firebase unless the `target` field is configured, in which case only a subset of
 the data will be sent to Firebase.
 
-It can be configured very simply as shown below: 
+It can be configured very simply as shown below. The event data contained in the `data` sub-field will be written to the path
+contained in the event `path` field using the operation contained in the event `verb` field.
+ 
 ```
 input {
   stdin { codec => 'json' }
@@ -39,12 +41,11 @@ output {
 
 ### Configuration
 
-The following list enumerates all configuration parameters of the `firebase` input:
+The following list enumerates all configuration parameters of the `firebase` output:
 
  * `url`: (required) The Firebase URL endpoint
  * `secret`: (optional) The secret to use for authenticating
  * `target`: (optional) The target field whose content will be sent to Firebase. If this setting is omitted, the whole event data will be sent. (default)
- * `metadata_target`: (optional) the name of the field into which to store some metadata about the call (default: `@metadata`)
  * `verb`: (required) The operation to carry out. Valid operations are `put`, `post`, `patch`, `delete` or a sprintf style string 
  to specify the operation based on the content of the event (full details [here](https://firebase.google.com/docs/database/rest/save-data#section-ways-to-save))
  * `path`: (required) The path to write the event data to. It can also be a sprintf style string to use a path present in the content of the event
