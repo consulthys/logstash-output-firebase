@@ -1,4 +1,4 @@
-# Logstash Plugin
+# Logstash Firebase Output Plugin
 
 This is an output plugin for [Logstash](https://github.com/elastic/logstash).
 
