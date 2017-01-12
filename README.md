@@ -49,6 +49,10 @@ The following list enumerates all configuration parameters of the `firebase` out
  * `verb`: (required) The operation to carry out. Valid operations are `put`, `post`, `patch`, `delete` or a sprintf style string 
  to specify the operation based on the content of the event (full details [here](https://firebase.google.com/docs/database/rest/save-data#section-ways-to-save))
  * `path`: (required) The path to write the event data to. It can also be a sprintf style string to use a path present in the content of the event
+ * `firebase_timeout`: (optional) The number of seconds to wait before the connection times out (default: 10s)
+ * `firebase_retries`: (optional) The number of retries to attempt in case of failures (default: 3)
+ * `firebase_auth_ttl`: (optional) The amount of time to wait before refreshing the authentication token (default: 82800s = 23h)
+                        Set to -1 to disable the auto-refresh of the authentication token
    
 ## Need Help?
 
