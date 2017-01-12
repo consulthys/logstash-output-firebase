@@ -112,7 +112,7 @@ class LogStash::Outputs::Firebase < LogStash::Outputs::Base
   #
   # For more details on these operations, please check
   # out https://firebase.google.com/docs/database/rest/save-data#section-ways-to-save[Firebase REST docs]
-  config :verb, :validate => :string, :default => 'put'
+  config :verb, :validate => :string, :required => true, :default => 'put'
 
   # The path to write the event data to. It can also be a sprintf style string to use a path present in the content
   # of the event

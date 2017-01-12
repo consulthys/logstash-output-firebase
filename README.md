@@ -1,16 +1,54 @@
 # Logstash Plugin
 
-This is a plugin for [Logstash](https://github.com/elastic/logstash).
+This is an output plugin for [Logstash](https://github.com/elastic/logstash).
 
 It is fully free and fully open source. The license is Apache 2.0, meaning you are pretty much free to use it however you want in whatever way.
 
 ## Documentation
 
-Logstash provides infrastructure to automatically generate documentation for this plugin. We use the asciidoc format to write documentation so any comments in the source code will be first converted into asciidoc and then into html. All plugin documentation are placed under one [central location](http://www.elastic.co/guide/en/logstash/current/).
+The [Firebase](https://firebase.google.com) output plugin writes data to the Firebase real-time 
+database [via the REST API](https://firebase.google.com/docs/database/rest/retrieve-data). It is based on the excellent 
+[rest-firebase](https://github.com/CodementorIO/rest-firebase) Ruby library by the [Codementor](https://www.codementor.io) folks.
+Each `firebase` output allows you to write your event data to whatever reference in your Firebase database.
 
-- For formatting code or config example, you can use the asciidoc `[source,ruby]` directive
-- For more asciidoc formatting tips, see the excellent reference here https://github.com/elastic/docs#asciidoc-guide
+This output plugin supports all https://firebase.google.com/docs/database/rest/save-data#section-ways-to-save[REST operations] 
+provided by Firebase, namely:
+ * `put`: to create new data or modify existing data under a specific database reference
+ * `patch`: to update some of the keys under a specific database reference without replacing all of the data.
+ * `post`: to add new data to a list of data
+ * `delete`: to remove data under a specific database reference
 
+The whole event data will be written to Firebase unless the `target` field is configured, in which case only a subset of
+the data will be sent to Firebase.
+
+It can be configured very simply as shown below: 
+```
+input {
+  stdin { codec => 'json' }
+}
+output {
+  firebase {
+    url => 'https://test.firebaseio.com'
+    auth => 'secret'
+    path => '%{path}'
+    verb => '%{verb}'
+    target => 'data'
+  }
+}
+```
+
+### Configuration
+
+The following list enumerates all configuration parameters of the `firebase` input:
+
+ * `url`: (required) The Firebase URL endpoint
+ * `secret`: (optional) The secret to use for authenticating
+ * `target`: (optional) The target field whose content will be sent to Firebase. If this setting is omitted, the whole event data will be sent. (default)
+ * `metadata_target`: (optional) the name of the field into which to store some metadata about the call (default: `@metadata`)
+ * `verb`: (required) The operation to carry out. Valid operations are `put`, `post`, `patch`, `delete` or a sprintf style string 
+ to specify the operation based on the content of the event (full details [here](https://firebase.google.com/docs/database/rest/save-data#section-ways-to-save))
+ * `path`: (required) The path to write the event data to. It can also be a sprintf style string to use a path present in the content of the event
+   
 ## Need Help?
 
 Need help? Try #logstash on freenode IRC or the https://discuss.elastic.co/c/logstash discussion forum.
